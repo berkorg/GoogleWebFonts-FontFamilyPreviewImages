@@ -5,7 +5,7 @@ import json
 import pandas as pd
 
 ## GOOGLE FONTS API KEY
-GOOGLE_FONTS_API_KEY = "<API-KEY-HERE>"
+GOOGLE_FONTS_API_KEY = "AIzaSyAoR3wuiZCbhCCNCJBHE0RRkvtlOu3HYO4"
 GOOGLE_FONTS_API_URL = (
     f"https://www.googleapis.com/webfonts/v1/webfonts?key={GOOGLE_FONTS_API_KEY}"
 )
@@ -13,7 +13,7 @@ GOOGLE_FONTS_API_URL = (
 directory_path = "./48px/compressed"
 
 # Specify the output file path
-output_file_path = "./output.txt"
+output_file_path = "./fonts-json.txt"
 
 if __name__ == "__main__":
 
@@ -59,10 +59,32 @@ if __name__ == "__main__":
                 if curr_google_font == None:
                     continue
 
+                def map_variants(n: str):
+                    if (
+                        n == "100"
+                        or n == "200"
+                        or n == "300"
+                        or n == "400"
+                        or n == "500"
+                        or n == "600"
+                        or n == "700"
+                        or n == "800"
+                        or n == "900"
+                    ):
+                        return n
+                    return None
+
+                mapped_variants = [
+                    map_variants(x) for x in curr_google_font["variants"]
+                ]
+                filteredVariants = [
+                    item for item in mapped_variants if item is not None
+                ]
                 # for google_font_item in all_items:
                 optimized_dict = {
                     "family": curr_google_font["family"],
                     "category": curr_google_font["category"],
+                    "variants": filteredVariants,
                     "img_url": f"https://raw.githubusercontent.com/berkorg/GoogleWebFonts-FontFamilyPreviewImages/master/48px/compressed/{file_name}",
                 }
                 output_json_arr.append(optimized_dict)
