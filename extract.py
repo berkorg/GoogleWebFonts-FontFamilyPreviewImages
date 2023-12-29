@@ -70,8 +70,9 @@ if __name__ == "__main__":
                         or n == "700"
                         or n == "800"
                         or n == "900"
+                        or n == "regular"
                     ):
-                        return n
+                        return n if n != "regular" else "400"
                     return None
 
                 mapped_variants = [
